@@ -26,6 +26,12 @@ public class PayCalculatorTest {
 	}
 	
 	@Test
+	public void shouldNotCalculateOvertimeWhenWorkRegularHours() {
+		assertPay(300, PayCalculator.calculate(30, 10, true));
+		assertPay(300, PayCalculator.calculate(30, 10, false));
+	}
+	
+	@Test
 	public void shouldCalculateOvertimeWhenWorkHoursGreaterThan40() {
 		assertPay(550, PayCalculator.calculate(50, 10, true));
 		assertPay(500, PayCalculator.calculate(50, 10, false));

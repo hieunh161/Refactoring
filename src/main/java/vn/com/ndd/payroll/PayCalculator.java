@@ -1,30 +1,20 @@
 package vn.com.ndd.payroll;
 
-public class PayCalculator {
-	private static final double OVERTIME_BONUS_RATE = 0.5;
-	private static final int OVERTIME_LIMIT = 80;
-	private static final int OVERTIME_THRESHOLD = 40;
+public abstract class PayCalculator {
+	protected static final double OVERTIME_BONUS_RATE = 0.5;
+	protected static final int OVERTIME_LIMIT = 80;
+	protected static final int OVERTIME_THRESHOLD = 40;
 	
-	private boolean isHourlyWorker;
-	
-	public PayCalculator(boolean isHourlyWorker){
-		this.isHourlyWorker = isHourlyWorker;
+	public final double calculate(double hours, double rate){
+		validateHours(hours);
+		return calculatePay(hours, rate);
 	}
-
-	public double calculate(double hours, double rate) {
+	
+	public abstract double calculatePay(double hours, double rate);
+	
+	protected void validateHours(double hours) {
 		if (hours < 0 || hours > OVERTIME_LIMIT) {
 			throw new RuntimeException("Hours out of range: " + hours);
 		}
-
-		if (isHourlyWorker()) {
-			double overTime = Math.max(0, hours - OVERTIME_THRESHOLD);
-			return hours * rate + overTime * rate * OVERTIME_BONUS_RATE;
-		} else {
-			return hours * rate;
-		}
-	}
-	
-	public boolean isHourlyWorker() {
-		return isHourlyWorker;
 	}
 }
